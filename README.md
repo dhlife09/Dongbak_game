@@ -57,12 +57,14 @@ http://localhost:3000
 ---
 
 ## 📁 프로젝트 구조
+```
 click-game/
  ├── server.js
  └── public/
       ├── start.html
       ├── game.html
       └── rank.html
+```
 
 ---
 
