@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Ranking</title>
+</head>
+<body>
+
+<h1>🏆 Ranking</h1>
+
+<h2>Your Record: <span id="myRecord"></span> sec</h2>
+
+<h3>Top 5</h3>
+<ol id="rankList"></ol>
+
+<button onclick="restart()">Restart</button>
+
+<script>
+  // 🔐 게임 클리어 여부 확인
+  const cleared = localStorage.getItem("gameCleared");
+
+  if (cleared !== "true") {
+    alert("⚠️ 게임을 먼저 클리어하세요!");
+    location.href = "/start";
+  }
+
+  const myRecord = localStorage.getItem("lastRecord");
+  document.getElementById("myRecord").textContent = myRecord;
+
+  const ranks = JSON.parse(localStorage.getItem("ranks")) || [];
+  const rankList = document.getElementById("rankList");
+
+  ranks.forEach((time) => {
+    const li = document.createElement("li");
+    li.textContent = time + " sec";
+    rankList.appendChild(li);
+  });
+
+  function restart() {
+    localStorage.removeItem("gameCleared");
+    location.href = "/start";
+  }
+</script>
+
+</body>
+</html>

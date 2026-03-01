@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Click Game - Start</title>
+</head>
+<body>
+  <h1>🎯 Click Move Game</h1>
+
+  <p>
+    ✔ 버튼을 클릭하면 오른쪽으로 이동합니다.<br>
+    ✔ 1600px에 도달하면 게임 종료!<br>
+    ✔ 가장 빠른 기록을 노려보세요.
+  </p>
+
+  <button onclick="startGame()">Start Game</button>
+
+  <script>
+    function startGame() {
+      // 시작 시간 저장
+      localStorage.setItem("startTime", Date.now());
+      location.href = "game.html";
+    }
+  </script>
+</body>
+</html>

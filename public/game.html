@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Click Game</title>
+  <style>
+    #goal {
+      position: absolute;
+      left: 1600px;
+      top: 150px;
+      text-align: center;
+      z-index: 5;
+    }
+
+    /* 🏁 체크무늬 결승선 */
+    .finish-line {
+      width: 40px;
+      height: 120px;
+      background: repeating-linear-gradient(
+          45deg,
+          black,
+          black 10px,
+          white 10px,
+          white 20px
+        );
+      border: 2px solid black;
+    }
+
+    .goal-text {
+      margin-top: 8px;
+      font-weight: bold;
+    }
+
+    #player {
+      position: absolute;
+      left: 0px;
+      top: 200px;
+      padding: 20px;
+      background: skyblue;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    #timer {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    #clicks {
+      position: fixed;
+      top: 40px;
+      right: 20px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="timer">⏱ 0.00s</div>
+<h2>목표: GOAL에 도달!</h2>
+
+<a id="player">CLICK ME</a>
+<div id="goal">
+  <div class="finish-line"></div>
+  <div class="goal-text">Goal!</div>
+</div>
+
+<script>
+  const player = document.getElementById("player");
+  const timerEl = document.getElementById("timer");
+  const clicksEl = document.getElementById("clicks");
+
+  let startTime = Number(localStorage.getItem("startTime"));
+
+  const timerInterval = setInterval(() => {
+    const now = Date.now();
+    const elapsed = ((now - startTime) / 1000).toFixed(2);
+    timerEl.textContent = "⏱ " + elapsed + "s";
+  }, 50);
+
+  player.onclick = function () {
+    let current = parseInt(this.style.left || "0", 10);
+    this.style.left = current + 16 + "px";
+
+    // 목표 도달
+    if (parseInt(this.style.left) >= 1600) {
+      clearInterval(timerInterval);
+      endGame();
+    }
+  };
+
+  function endGame() {
+    const endTime = Date.now();
+    const record = ((endTime - startTime) / 1000).toFixed(2);
+
+    localStorage.setItem("lastRecord", record);
+    localStorage.setItem("gameCleared", "true"); // 🔐 접근 제어용
+    saveRank(record);
+
+    location.href = "/rank";
+  }
+
+  function saveRank(record) {
+    let ranks = JSON.parse(localStorage.getItem("ranks")) || [];
+    ranks.push(parseFloat(record));
+    ranks.sort((a, b) => a - b);
+    ranks = ranks.slice(0, 5);
+    localStorage.setItem("ranks", JSON.stringify(ranks));
+  }
+</script>
+
+</body>
+</html>
