@@ -16,9 +16,7 @@
         }
 
         body {
-            /* rank.html과 동일하게 Noto Color Emoji를 Pretendard 바로 뒤에 배치 */
             font-family: 'Pretendard', 'Noto Color Emoji', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-            /* 밝고 화사한 그라데이션 배경 */
             background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
             color: #1e293b;
             overflow: hidden;
@@ -26,14 +24,12 @@
             width: 100vw;
         }
 
-        /* 메인 레이아웃 */
         .container {
             display: flex;
             height: 100vh;
             width: 100vw;
         }
 
-        /* 왼쪽 섹션 */
         .left-section {
             flex: 1;
             display: flex;
@@ -45,7 +41,6 @@
             position: relative;
         }
 
-        /* 로고 스타일 */
         .club-logo {
             width: 160px;
             height: auto;
@@ -59,7 +54,6 @@
             margin-bottom: 2rem;
             color: #0369a1; 
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            /* 이모지 폰트가 우선 적용되도록 강제 설정 */
             font-family: 'Pretendard', 'Noto Color Emoji', sans-serif;
             display: flex;
             align-items: center;
@@ -67,7 +61,11 @@
             gap: 15px;
         }
 
-        /* 설명 박스 */
+        #adminTrigger {
+            cursor: default;
+            user-select: none;
+        }
+
         .description-box {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
@@ -93,14 +91,12 @@
             align-items: flex-start;
         }
 
-        /* 리스트 불릿 이모지 전용 폰트 설정 */
         .description li::before {
             content: "✨";
             margin-right: 15px;
             font-family: 'Noto Color Emoji', sans-serif;
         }
 
-        /* 시작 버튼 */
         .start-button {
             padding: 1.8rem 6rem;
             font-size: 2.5rem;
@@ -124,7 +120,6 @@
             transform: translateY(2px);
         }
 
-        /* 오른쪽 섹션: 홍보 포스터 전용 */
         .right-section {
             flex: 0.85; 
             background-color: #f8fafc;
@@ -149,10 +144,8 @@
 
     <div class="container">
         <div class="left-section">
-            <!-- 로고 이미지 (public/logo.png) -->
             <img src="logo.png" alt="동아리 로고" class="club-logo">
-            
-            <h1 class="title">🎯 Click Move Game</h1>
+            <h1 class="title"><span id="adminTrigger">🎯</span> Click Move Game</h1>
             
             <div class="description-box">
                 <ul class="description">
@@ -167,23 +160,38 @@
         </div>
 
         <div class="right-section">
-            <!-- 포스터 이미지 (public/poster.png) -->
             <img src="poster.png" alt="동아리 홍보 포스터" class="poster-image">
         </div>
     </div>
 
     <script>
         function startGame() {
-            // 시작 시간 저장 로직
             localStorage.setItem("startTime", Date.now());
-            // 게임 페이지로 이동
             location.href = "game.html";
         }
 
-        // 키오스크 터치 피드백
         const btn = document.querySelector('.start-button');
         btn.addEventListener('touchstart', () => btn.style.transform = 'scale(0.95)');
         btn.addEventListener('touchend', () => btn.style.transform = 'scale(1)');
+
+        // 🛠️ 관리자 히든 메뉴 개선
+        document.getElementById("adminTrigger").addEventListener("click", function() {
+            const password = prompt("관리자 비밀번호를 입력하세요:");
+            if (password === "2026") {
+                const choice = prompt("명령을 선택하세요:\n1. 데이터 초기화\n2. 랭킹 페이지 이동");
+                if (choice === "1") {
+                    if (confirm("모든 데이터를 초기화하시겠습니까?")) {
+                        localStorage.clear();
+                        alert("초기화되었습니다.");
+                        location.reload();
+                    }
+                } else if (choice === "2") {
+                    location.href = "rank.html";
+                }
+            } else if (password !== null) {
+                alert("비밀번호가 틀렸습니다.");
+            }
+        });
     </script>
 </body>
 </html>
