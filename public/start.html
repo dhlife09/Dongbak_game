@@ -1,26 +1,193 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>Click Game - Start</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click Move Game - Start</title>
+    <style>
+        /* 기본 스타일 초기화 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            /* 밝고 화사한 그라데이션 배경 */
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            color: #1e293b;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* 메인 레이아웃 */
+        .container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* 왼쪽 섹션 */
+        .left-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* 로고 스타일 */
+        .club-logo {
+            width: 160px;
+            height: auto;
+            margin-bottom: 2rem;
+            /* 밝은 배경에 맞춰 그림자 조정 */
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+        }
+
+        .title {
+            font-size: 4.5rem; 
+            font-weight: 800;
+            margin-bottom: 2rem;
+            /* 타이틀을 더 선명한 색상으로 변경 */
+            color: #0369a1; 
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 설명 박스를 밝고 깨끗하게 변경 */
+        .description-box {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 32px;
+            border: 2px solid #ffffff;
+            margin-bottom: 3.5rem;
+            max-width: 700px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .description {
+            font-size: 1.8rem;
+            color: #334155;
+            line-height: 1.8;
+            list-style: none;
+            text-align: left;
+        }
+
+        .description li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .description li::before {
+            content: "✨";
+            margin-right: 15px;
+        }
+
+        /* 버튼을 더 눈에 띄는 활기찬 색상으로 변경 */
+        .start-button {
+            padding: 1.8rem 6rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            border: none;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.4);
+            outline: none;
+        }
+
+        .start-button:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(14, 165, 233, 0.5);
+        }
+
+        .start-button:active {
+            transform: translateY(2px);
+        }
+
+        /* 오른쪽 섹션 */
+        .right-section {
+            flex: 0.85; 
+            background-color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-left: 1px solid #e2e8f0;
+            padding: 30px;
+        }
+
+        .poster-image {
+            max-width: 100%;
+            max-height: 95%;
+            object-fit: contain;
+            border-radius: 20px;
+            /* 포스터 경계선을 더 부드럽게 */
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+
+        /* 하단 푸터 정보 */
+        .footer-info {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+            font-size: 1.1rem;
+            color: #94a3b8;
+            text-align: center;
+            padding-right: 45%;
+        }
+    </style>
 </head>
 <body>
-  <h1>🎯 Click Move Game</h1>
 
-  <p>
-    ✔ 버튼을 클릭하면 오른쪽으로 이동합니다.<br>
-    ✔ 1600px에 도달하면 게임 종료!<br>
-    ✔ 가장 빠른 기록을 노려보세요.
-  </p>
+    <div class="container">
+        <div class="left-section">
+            <!-- 로고 이미지 -->
+            <img src="logo.png" alt="동아리 로고" class="club-logo">
+            
+            <h1 class="title">🎯 Click Move Game</h1>
+            
+            <div class="description-box">
+                <ul class="description">
+                    <li>버튼을 클릭하면 캐릭터가 오른쪽으로 이동합니다.</li>
+                    <li>1600px 지점에 도달하면 게임이 종료됩니다.</li>
+                    <li>가장 빠른 기록을 세워 명예의 전당에 도전하세요!</li>
+                </ul>
+            </div>
+            
+            <button class="start-button" onclick="startGame()">Start Game</button>
 
-  <button onclick="startGame()">Start Game</button>
+            <div class="footer-info">
+                동아리 홍보 키오스크 | 2024 Promotion Event
+            </div>
+        </div>
 
-  <script>
-    function startGame() {
-      // 시작 시간 저장
-      localStorage.setItem("startTime", Date.now());
-      location.href = "game.html";
-    }
-  </script>
+        <div class="right-section">
+            <!-- 포스터 이미지 -->
+            <img src="poster.png" alt="동아리 홍보 포스터" class="poster-image">
+        </div>
+    </div>
+
+    <script>
+        function startGame() {
+            localStorage.setItem("startTime", Date.now());
+            location.href = "game.html";
+        }
+
+        // 터치 피드백
+        const btn = document.querySelector('.start-button');
+        btn.addEventListener('touchstart', () => btn.style.transform = 'scale(0.95)');
+        btn.addEventListener('touchend', () => btn.style.transform = 'scale(1)');
+    </script>
 </body>
 </html>
