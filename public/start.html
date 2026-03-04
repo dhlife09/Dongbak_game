@@ -278,7 +278,7 @@
     <div id="adminModal">
         <div class="modal-content">
             <h2 class="modal-title" id="adminModalTitle">관리자 인증</h2>
-            <p id="modalErrorMessage"></p>
+            <p id="modalErrorMessage">해당 기능은 취약점이 아닙니다!</p>
             
             <!-- 비밀번호 입력 영역 -->
             <div id="passwordArea">
@@ -329,7 +329,7 @@
         const modalTitle = document.getElementById("adminModalTitle");
 
         let currentPass = "";
-        const CORRECT_PASS = "0510";
+        const CORRECT_PASS = "0000";
 
         document.getElementById("adminTrigger").addEventListener("click", function() {
             openAdminModal();
@@ -338,7 +338,7 @@
         function openAdminModal() {
             currentPass = "";
             updatePassDisplay();
-            errorMsg.textContent = "";
+            errorMsg.textContent = "해당 기능은 취약점이 아닙니다!";
             modalTitle.textContent = "관리자 인증";
             passwordArea.style.display = "block";
             menuArea.style.display = "none";
@@ -353,7 +353,6 @@
             if (currentPass.length < 4) {
                 currentPass += num;
                 updatePassDisplay();
-                errorMsg.textContent = "";
             }
         }
 
@@ -389,7 +388,6 @@
         }
 
         function adminReset() {
-            // 커스텀 confirm UI 대신 시스템 브라우저 confirm 사용 (키오스크 환경이므로)
             if (confirm("모든 데이터를 초기화하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
                 localStorage.clear();
                 alert("데이터가 초기화되었습니다.");
@@ -398,6 +396,8 @@
         }
 
         function goToRank() {
+            // 관리자 접근임을 표시하는 임시 플래그 설정
+            localStorage.setItem("adminAccess", "true");
             location.href = "rank.html";
         }
     </script>

@@ -186,13 +186,18 @@
     </div>
 
     <script>
-        // 🔐 게임 클리어 여부 확인 (기존 로직 유지)
+        // 🔐 게임 클리어 여부 및 관리자 우회 플래그 확인
         const cleared = localStorage.getItem("gameCleared");
+        const adminAccess = localStorage.getItem("adminAccess");
 
-        if (cleared !== "true") {
+        // 관리자 우회 플래그도 없고 게임 클리어도 안 된 경우에만 리다이렉트
+        if (cleared !== "true" && adminAccess !== "true") {
             alert("⚠️ 게임을 먼저 클리어하세요!");
             location.href = "start.html";
         }
+
+        // 일회성 관리자 접근 권한 삭제 (보안 및 정상 로직 복구용)
+        localStorage.removeItem("adminAccess");
 
         // 내 기록 표시 (기존 로직 유지)
         const myRecord = localStorage.getItem("lastRecord") || "0.00";
