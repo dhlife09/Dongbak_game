@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Click Move Game - Start</title>
-    <!-- 웹폰트 적용: Pretendard 및 이모지 폰트 (네모 기호 방지) -->
+    <!-- 웹폰트 적용: Pretendard 및 Noto Color Emoji (네모 기호 방지용) -->
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap" rel="stylesheet">
     <style>
@@ -16,7 +16,8 @@
         }
 
         body {
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            /* rank.html과 동일하게 Noto Color Emoji를 Pretendard 바로 뒤에 배치 */
+            font-family: 'Pretendard', 'Noto Color Emoji', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
             /* 밝고 화사한 그라데이션 배경 */
             background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
             color: #1e293b;
@@ -49,7 +50,6 @@
             width: 160px;
             height: auto;
             margin-bottom: 2rem;
-            /* 밝은 배경에 맞춰 그림자 조정 */
             filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
         }
 
@@ -57,12 +57,17 @@
             font-size: 4.5rem; 
             font-weight: 800;
             margin-bottom: 2rem;
-            /* 타이틀을 더 선명한 색상으로 변경 */
             color: #0369a1; 
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            /* 이모지 폰트가 우선 적용되도록 강제 설정 */
+            font-family: 'Pretendard', 'Noto Color Emoji', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
         }
 
-        /* 설명 박스를 밝고 깨끗하게 변경 */
+        /* 설명 박스 */
         .description-box {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
@@ -88,12 +93,14 @@
             align-items: flex-start;
         }
 
+        /* 리스트 불릿 이모지 전용 폰트 설정 */
         .description li::before {
             content: "✨";
             margin-right: 15px;
+            font-family: 'Noto Color Emoji', sans-serif;
         }
 
-        /* 버튼을 더 눈에 띄는 활기찬 색상으로 변경 */
+        /* 시작 버튼 */
         .start-button {
             padding: 1.8rem 6rem;
             font-size: 2.5rem;
@@ -117,7 +124,7 @@
             transform: translateY(2px);
         }
 
-        /* 오른쪽 섹션 */
+        /* 오른쪽 섹션: 홍보 포스터 전용 */
         .right-section {
             flex: 0.85; 
             background-color: #f8fafc;
@@ -133,21 +140,8 @@
             max-height: 95%;
             object-fit: contain;
             border-radius: 20px;
-            /* 포스터 경계선을 더 부드럽게 */
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
             background-color: white;
-        }
-
-        /* 하단 푸터 정보 */
-        .footer-info {
-            position: absolute;
-            bottom: 30px;
-            left: 0;
-            width: 100%;
-            font-size: 1.1rem;
-            color: #94a3b8;
-            text-align: center;
-            padding-right: 45%;
         }
     </style>
 </head>
@@ -155,7 +149,7 @@
 
     <div class="container">
         <div class="left-section">
-            <!-- 로고 이미지 -->
+            <!-- 로고 이미지 (public/logo.png) -->
             <img src="logo.png" alt="동아리 로고" class="club-logo">
             
             <h1 class="title">🎯 Click Move Game</h1>
@@ -172,18 +166,20 @@
         </div>
 
         <div class="right-section">
-            <!-- 포스터 이미지 -->
+            <!-- 포스터 이미지 (public/poster.png) -->
             <img src="poster.png" alt="동아리 홍보 포스터" class="poster-image">
         </div>
     </div>
 
     <script>
         function startGame() {
+            // 시작 시간 저장 로직
             localStorage.setItem("startTime", Date.now());
+            // 게임 페이지로 이동
             location.href = "game.html";
         }
 
-        // 터치 피드백
+        // 키오스크 터치 피드백
         const btn = document.querySelector('.start-button');
         btn.addEventListener('touchstart', () => btn.style.transform = 'scale(0.95)');
         btn.addEventListener('touchend', () => btn.style.transform = 'scale(1)');
