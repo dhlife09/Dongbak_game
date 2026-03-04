@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Click Move Game - Ranking</title>
-    <!-- 웹폰트 적용: Pretendard 및 이모지 폰트 (네모 기호 방지) -->
+    <!-- 웹폰트 적용: Pretendard 및 Noto Color Emoji -->
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap" rel="stylesheet">
     <style>
@@ -16,7 +16,6 @@
         }
 
         body {
-            /* Pretendard와 이모지 전용 폰트 우선 순위 설정 */
             font-family: 'Pretendard', 'Noto Color Emoji', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
             background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
             color: #1e293b;
@@ -25,14 +24,13 @@
             width: 100vw;
         }
 
-        /* 메인 레이아웃 */
         .container {
             display: flex;
             height: 100vh;
             width: 100vw;
         }
 
-        /* 왼쪽 섹션: 순위 정보 */
+        /* 왼쪽 섹션 */
         .left-section {
             flex: 1;
             display: flex;
@@ -44,35 +42,71 @@
         }
 
         .title {
-            font-size: 4rem; 
+            font-size: 3.5rem; 
             font-weight: 800;
             margin-bottom: 1.5rem;
             color: #0369a1; 
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 15px;
         }
 
-        /* 내 기록 카드 */
+        /* 내 기록 및 이름 입력 카드 */
         .my-record-card {
             background: #ffffff;
-            padding: 2rem 4rem;
+            padding: 2rem;
             border-radius: 32px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
             border: 2px solid #0ea5e9;
+            width: 100%;
+            max-width: 500px;
         }
 
         .my-record-label {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: #64748b;
             margin-bottom: 0.5rem;
         }
 
         .my-record-value {
-            font-size: 3.5rem;
+            font-size: 3rem;
             font-weight: 800;
             color: #0ea5e9;
+            margin-bottom: 1.5rem;
+        }
+
+        /* 이름 입력 폼 */
+        .name-input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        #playerNameInput {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border-radius: 16px;
+            border: 2px solid #e2e8f0;
+            font-size: 1.2rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        #playerNameInput:focus {
+            border-color: #0ea5e9;
+        }
+
+        .save-button {
+            padding: 0 1.5rem;
+            background: #0ea5e9;
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 1.1rem;
         }
 
         /* 랭킹 리스트 박스 */
@@ -84,12 +118,12 @@
             border: 1px solid #ffffff;
             width: 100%;
             max-width: 600px;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
 
         .rank-box h3 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             margin-bottom: 1.5rem;
             color: #0369a1;
             display: flex;
@@ -104,7 +138,7 @@
         }
 
         #rankList li {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             padding: 0.8rem 1.5rem;
             margin-bottom: 0.5rem;
             background: white;
@@ -113,35 +147,33 @@
             justify-content: space-between;
             color: #334155;
             box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            align-items: center;
         }
 
-        /* 1등 특별 강조 */
         #rankList li:nth-child(1) {
             background: #fffbeb;
             border: 1px solid #fcd34d;
             font-weight: 700;
         }
 
-        /* 버튼 스타일 */
         .restart-button {
-            padding: 1.5rem 5rem;
-            font-size: 2rem;
+            padding: 1.2rem 4rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: #ffffff;
             background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
             border: none;
             border-radius: 100px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s;
             box-shadow: 0 10px 30px rgba(14, 165, 233, 0.4);
         }
 
         .restart-button:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(14, 165, 233, 0.5);
         }
 
-        /* 오른쪽 섹션: 홍보 포스터 */
+        /* 오른쪽 섹션 */
         .right-section {
             flex: 0.85; 
             background-color: #f8fafc;
@@ -170,6 +202,15 @@
             <div class="my-record-card">
                 <p class="my-record-label">Your Record</p>
                 <p class="my-record-value"><span id="myRecord">0.00</span>s</p>
+                
+                <!-- 이름 입력 창: 신규 기록일 때만 표시 -->
+                <div id="nameEntrySection">
+                    <p style="margin-bottom: 10px; font-weight: 600;">랭킹에 등록할 이름을 입력하세요!</p>
+                    <div class="name-input-group">
+                        <input type="text" id="playerNameInput" placeholder="이름 (최대 8자)" maxlength="8">
+                        <button class="save-button" onclick="saveRank()">등록</button>
+                    </div>
+                </div>
             </div>
 
             <div class="rank-box">
@@ -186,37 +227,75 @@
     </div>
 
     <script>
-        // 🔐 게임 클리어 여부 확인 (기존 로직 유지)
+        // 🔐 기존 로직 유지: 게임 클리어 여부 및 내 기록 불러오기
         const cleared = localStorage.getItem("gameCleared");
-
-        if (cleared !== "true") {
-            alert("⚠️ 게임을 먼저 클리어하세요!");
-            location.href = "start.html";
-        }
-
-        // 내 기록 표시 (기존 로직 유지)
         const myRecord = localStorage.getItem("lastRecord") || "0.00";
         document.getElementById("myRecord").textContent = myRecord;
 
-        // 랭킹 리스트 표시 (기존 로직 유지 및 UI 최적화)
-        const ranks = JSON.parse(localStorage.getItem("ranks")) || [];
-        const rankList = document.getElementById("rankList");
-
-        // 상위 5개 추출 및 표시
-        ranks.sort((a, b) => a - b).slice(0, 5).forEach((time, index) => {
-            const li = document.createElement("li");
-            // 메달 이모지 적용
-            const medal = index === 0 ? "🥇 " : index === 1 ? "🥈 " : index === 2 ? "🥉 " : (index + 1) + ". ";
-            li.innerHTML = `<span>${medal} Player</span> <span>${time}s</span>`;
-            rankList.appendChild(li);
-        });
-
-        // 데이터가 없을 경우
-        if (ranks.length === 0) {
-            rankList.innerHTML = "<p style='text-align:center; color:#94a3b8;'>아직 기록이 없습니다.</p>";
+        // 이름 입력 섹션 노출 제어
+        if (cleared !== "true") {
+            document.getElementById("nameEntrySection").style.display = "none";
+            // 비정상 접근 시 리다이렉트 (기존 로직 유지)
+            if (!localStorage.getItem("lastRecord")) {
+                location.href = "start.html";
+            }
         }
 
-        // 재시작 함수 (기존 로직 유지)
+        // 랭킹 리스트 불러오기 및 표시 함수 (기존 랭킹 표시 로직을 객체 지향으로 확장)
+        function updateRankDisplay() {
+            const ranks = JSON.parse(localStorage.getItem("ranks")) || [];
+            const rankList = document.getElementById("rankList");
+            rankList.innerHTML = "";
+
+            // 기록 순 정렬 (객체 {name, time} 및 기존 숫자 데이터 모두 대응)
+            ranks.sort((a, b) => {
+                const timeA = typeof a === 'object' ? a.time : a;
+                const timeB = typeof b === 'object' ? b.time : b;
+                return timeA - timeB;
+            });
+
+            // 상위 5개 표시
+            ranks.slice(0, 5).forEach((item, index) => {
+                const li = document.createElement("li");
+                const medal = index === 0 ? "🥇 " : index === 1 ? "🥈 " : index === 2 ? "🥉 " : (index + 1) + ". ";
+                
+                // 데이터 타입에 따른 이름 및 시간 추출 (호환성 유지)
+                const displayName = typeof item === 'object' ? item.name : "Player";
+                const displayTime = typeof item === 'object' ? item.time : item;
+
+                li.innerHTML = `<span>${medal} ${displayName}</span> <span>${displayTime}s</span>`;
+                rankList.appendChild(li);
+            });
+
+            if (ranks.length === 0) {
+                rankList.innerHTML = "<p style='text-align:center; color:#94a3b8;'>아직 기록이 없습니다.</p>";
+            }
+        }
+
+        // 신규 기능: 이름 저장 함수
+        function saveRank() {
+            const nameInput = document.getElementById("playerNameInput");
+            const name = nameInput.value.trim() || "Player";
+            const time = parseFloat(myRecord);
+
+            const ranks = JSON.parse(localStorage.getItem("ranks")) || [];
+            
+            // 신규 기록 객체 추가
+            ranks.push({ name: name, time: time });
+            
+            // 로컬 스토리지 업데이트 및 상태값 초기화
+            localStorage.setItem("ranks", JSON.stringify(ranks));
+            localStorage.removeItem("gameCleared"); 
+
+            // UI 즉시 업데이트
+            document.getElementById("nameEntrySection").style.display = "none";
+            updateRankDisplay();
+        }
+
+        // 초기 화면 업데이트 (기존 실행부 유지)
+        updateRankDisplay();
+
+        // 다시 시작 로직 유지
         function restart() {
             localStorage.removeItem("gameCleared");
             location.href = "start.html";
