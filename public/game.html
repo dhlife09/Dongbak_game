@@ -1,116 +1,226 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>Click Game</title>
-  <style>
-    #goal {
-      position: absolute;
-      left: 1600px;
-      top: 150px;
-      text-align: center;
-      z-index: 5;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click Move Game - Ranking</title>
+    <!-- 웹폰트 적용: Pretendard 및 이모지 폰트 (네모 기호 방지) -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap" rel="stylesheet">
+    <style>
+        /* 기본 스타일 초기화 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    /* 🏁 체크무늬 결승선 */
-    .finish-line {
-      width: 40px;
-      height: 120px;
-      background: repeating-linear-gradient(
-          45deg,
-          black,
-          black 10px,
-          white 10px,
-          white 20px
-        );
-      border: 2px solid black;
-    }
+        body {
+            /* Pretendard와 이모지 전용 폰트 우선 순위 설정 */
+            font-family: 'Pretendard', 'Noto Color Emoji', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            color: #1e293b;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
 
-    .goal-text {
-      margin-top: 8px;
-      font-weight: bold;
-    }
+        /* 메인 레이아웃 */
+        .container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
 
-    #player {
-      position: absolute;
-      left: 0px;
-      top: 200px;
-      padding: 20px;
-      background: skyblue;
-      cursor: pointer;
-      z-index: 10;
-    }
+        /* 왼쪽 섹션: 순위 정보 */
+        .left-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            text-align: center;
+        }
 
-    #timer {
-      position: fixed;
-      top: 10px;
-      right: 20px;
-      font-size: 20px;
-      font-weight: bold;
-    }
+        .title {
+            font-size: 4rem; 
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: #0369a1; 
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
-    #clicks {
-      position: fixed;
-      top: 40px;
-      right: 20px;
-      font-size: 16px;
-    }
-  </style>
+        /* 내 기록 카드 */
+        .my-record-card {
+            background: #ffffff;
+            padding: 2rem 4rem;
+            border-radius: 32px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2.5rem;
+            border: 2px solid #0ea5e9;
+        }
+
+        .my-record-label {
+            font-size: 1.5rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+
+        .my-record-value {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: #0ea5e9;
+        }
+
+        /* 랭킹 리스트 박스 */
+        .rank-box {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 32px;
+            border: 1px solid #ffffff;
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .rank-box h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #0369a1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #rankList {
+            list-style: none;
+            text-align: left;
+        }
+
+        #rankList li {
+            font-size: 1.8rem;
+            padding: 0.8rem 1.5rem;
+            margin-bottom: 0.5rem;
+            background: white;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            color: #334155;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        /* 1등 특별 강조 */
+        #rankList li:nth-child(1) {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            font-weight: 700;
+        }
+
+        /* 버튼 스타일 */
+        .restart-button {
+            padding: 1.5rem 5rem;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            border: none;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.4);
+        }
+
+        .restart-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(14, 165, 233, 0.5);
+        }
+
+        /* 오른쪽 섹션: 홍보 포스터 */
+        .right-section {
+            flex: 0.85; 
+            background-color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-left: 1px solid #e2e8f0;
+            padding: 30px;
+        }
+
+        .poster-image {
+            max-width: 100%;
+            max-height: 95%;
+            object-fit: contain;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
 
-<div id="timer">⏱ 0.00s</div>
-<h2>목표: GOAL에 도달!</h2>
+    <div class="container">
+        <div class="left-section">
+            <h1 class="title">🏆 Ranking</h1>
+            
+            <div class="my-record-card">
+                <p class="my-record-label">Your Record</p>
+                <p class="my-record-value"><span id="myRecord">0.00</span>s</p>
+            </div>
 
-<a id="player">CLICK ME</a>
-<div id="goal">
-  <div class="finish-line"></div>
-  <div class="goal-text">Goal!</div>
-</div>
+            <div class="rank-box">
+                <h3>🥇 Top 5</h3>
+                <ol id="rankList"></ol>
+            </div>
+            
+            <button class="restart-button" onclick="restart()">다시 도전하기</button>
+        </div>
 
-<script>
-  const player = document.getElementById("player");
-  const timerEl = document.getElementById("timer");
-  const clicksEl = document.getElementById("clicks");
+        <div class="right-section">
+            <img src="poster.png" alt="동아리 홍보 포스터" class="poster-image">
+        </div>
+    </div>
 
-  let startTime = Number(localStorage.getItem("startTime"));
+    <script>
+        // 🔐 게임 클리어 여부 확인 (기존 로직 유지)
+        const cleared = localStorage.getItem("gameCleared");
 
-  const timerInterval = setInterval(() => {
-    const now = Date.now();
-    const elapsed = ((now - startTime) / 1000).toFixed(2);
-    timerEl.textContent = "⏱ " + elapsed + "s";
-  }, 50);
+        if (cleared !== "true") {
+            alert("⚠️ 게임을 먼저 클리어하세요!");
+            location.href = "start.html";
+        }
 
-  player.onclick = function () {
-    let current = parseInt(this.style.left || "0", 10);
-    this.style.left = current + 16 + "px";
+        // 내 기록 표시 (기존 로직 유지)
+        const myRecord = localStorage.getItem("lastRecord") || "0.00";
+        document.getElementById("myRecord").textContent = myRecord;
 
-    // 목표 도달
-    if (parseInt(this.style.left) >= 1600) {
-      clearInterval(timerInterval);
-      endGame();
-    }
-  };
+        // 랭킹 리스트 표시 (기존 로직 유지 및 UI 최적화)
+        const ranks = JSON.parse(localStorage.getItem("ranks")) || [];
+        const rankList = document.getElementById("rankList");
 
-  function endGame() {
-    const endTime = Date.now();
-    const record = ((endTime - startTime) / 1000).toFixed(2);
+        // 상위 5개 추출 및 표시
+        ranks.sort((a, b) => a - b).slice(0, 5).forEach((time, index) => {
+            const li = document.createElement("li");
+            // 메달 이모지 적용
+            const medal = index === 0 ? "🥇 " : index === 1 ? "🥈 " : index === 2 ? "🥉 " : (index + 1) + ". ";
+            li.innerHTML = `<span>${medal} Player</span> <span>${time}s</span>`;
+            rankList.appendChild(li);
+        });
 
-    localStorage.setItem("lastRecord", record);
-    localStorage.setItem("gameCleared", "true"); // 🔐 접근 제어용
-    saveRank(record);
+        // 데이터가 없을 경우
+        if (ranks.length === 0) {
+            rankList.innerHTML = "<p style='text-align:center; color:#94a3b8;'>아직 기록이 없습니다.</p>";
+        }
 
-    location.href = "/rank";
-  }
-
-  function saveRank(record) {
-    let ranks = JSON.parse(localStorage.getItem("ranks")) || [];
-    ranks.push(parseFloat(record));
-    ranks.sort((a, b) => a - b);
-    ranks = ranks.slice(0, 5);
-    localStorage.setItem("ranks", JSON.stringify(ranks));
-  }
-</script>
-
+        // 재시작 함수 (기존 로직 유지)
+        function restart() {
+            localStorage.removeItem("gameCleared");
+            location.href = "start.html";
+        }
+    </script>
 </body>
 </html>
